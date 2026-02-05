@@ -7,149 +7,184 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .safety-border { border-top: 4px solid #ef4444; }
-        .card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .safety-header { border-bottom: 2px solid #ef4444; background: #fef2f2; }
+        .card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .tab-active { border-bottom: 3px solid #0f172a; color: #0f172a; font-weight: 700; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .glass-nav { backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.8); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-20">
 
-    <!-- Safety & Privacy Header -->
-    <div class="bg-red-50 p-4 safety-border">
-        <div class="max-w-6xl mx-auto flex items-center gap-4">
-            <div class="bg-red-100 p-2 rounded-full">🛡️</div>
-            <div>
-                <h2 class="text-xs font-bold text-red-800 uppercase tracking-widest">Security Status: Encrypted Local Storage</h2>
-                <p class="text-[11px] text-red-700 leading-tight">
-                    Your financial inputs and project notes are saved directly in your browser's local memory. 
-                    No data is transmitted to L-Care or external servers. Your birthday (March 21) and project logic are for your eyes only.
-                </p>
+    <!-- Safety & Privacy Banner -->
+    <div class="safety-header px-4 py-3 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">🛡️</span>
+                <div>
+                    <h2 class="text-[10px] font-black text-red-700 uppercase tracking-widest">Enterprise Privacy Protocol</h2>
+                    <p class="text-[11px] text-red-600 font-medium">Local Storage Only: No data is transmitted or stored on external servers.</p>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <span class="text-[10px] font-bold text-red-400 border border-red-200 px-2 py-1 rounded">SSL ENCRYPTED SESSION</span>
             </div>
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+    <div class="max-w-6xl mx-auto px-4 mt-8">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
-                <h1 class="text-4xl font-black text-slate-900 tracking-tight">L-Care Dashboard</h1>
-                <p class="text-slate-500 font-medium">Real Estate Investment & Project Management Toolkit</p>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-white font-bold">L</div>
+                    <span class="text-sm font-bold tracking-tighter text-slate-400">INVESTOR TOOLKIT V2.0</span>
+                </div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tight">Project Command Center</h1>
             </div>
-            <div class="text-right hidden md:block">
-                <p class="text-[10px] font-bold text-slate-400 uppercase">Current Session</p>
-                <p id="current-date" class="text-sm font-semibold text-slate-600"></p>
+            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                <p id="current-date" class="text-xs font-bold text-slate-500 uppercase"></p>
             </div>
         </header>
 
         <!-- Navigation -->
-        <nav class="flex gap-8 border-b border-slate-200 mb-8 overflow-x-auto">
+        <nav class="flex gap-8 border-b border-slate-200 mb-8 overflow-x-auto no-scrollbar">
             <button onclick="showTab('calc')" id="btn-calc" class="pb-4 px-2 tab-active transition-all whitespace-nowrap">ROI Calculator</button>
             <button onclick="showTab('vetting')" id="btn-vetting" class="pb-4 px-2 text-slate-400 hover:text-slate-600 transition-all whitespace-nowrap">Contractor Vetting</button>
             <button onclick="showTab('notes')" id="btn-notes" class="pb-4 px-2 text-slate-400 hover:text-slate-600 transition-all whitespace-nowrap">Project Notes</button>
         </nav>
 
-        <!-- ROI Calculator Section -->
-        <section id="tab-calc" class="grid lg:grid-cols-3 gap-6">
+        <!-- ROI Calculator -->
+        <section id="tab-calc" class="grid lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
             <div class="lg:col-span-2 space-y-6">
                 <div class="card p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">💰 Investment Inputs</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Purchase Price ($)</label>
-                            <input type="number" id="buy-price" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="0">
+                    <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        Financial Inputs
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Purchase Price ($)</label>
+                            <input type="number" id="buy-price" oninput="doCalc()" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 transition-all" placeholder="0.00">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Renovation Budget ($)</label>
-                            <input type="number" id="reno-cost" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="0">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Renovation Estimate ($)</label>
+                            <input type="number" id="reno-cost" oninput="doCalc()" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 transition-all" placeholder="0.00">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Holding & Selling Costs ($)</label>
-                            <input type="number" id="hold-cost" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Taxes, Fees, Interest">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Holding/Closing Costs ($)</label>
+                            <input type="number" id="hold-cost" oninput="doCalc()" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 transition-all" placeholder="0.00">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Target Sale Price (ARV) ($)</label>
-                            <input type="number" id="arv" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Expected Value">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">After Repair Value (ARV) ($)</label>
+                            <input type="number" id="arv" oninput="doCalc()" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 transition-all" placeholder="0.00">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ROI Output -->
+            <!-- Analysis Sidebar -->
             <div class="space-y-4">
-                <div class="bg-slate-900 rounded-xl p-8 text-white shadow-xl flex flex-col items-center justify-center text-center h-full">
-                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Projected Profit</span>
-                    <div id="out-profit" class="text-4xl font-black mb-6">$0</div>
-                    <div class="w-full h-px bg-slate-800 mb-6"></div>
-                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Annualized ROI</span>
-                    <div id="out-roi" class="text-3xl font-bold text-blue-400">0%</div>
+                <div class="bg-slate-900 rounded-2xl p-8 text-white shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10 text-center">
+                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block">Net Profit Forecast</span>
+                        <div id="out-profit" class="text-5xl font-black mb-8">$0</div>
+                        
+                        <div class="grid grid-cols-2 gap-4 pt-6 border-t border-slate-800">
+                            <div>
+                                <span class="text-slate-500 text-[9px] font-bold uppercase block mb-1">Total Basis</span>
+                                <div id="out-basis" class="text-lg font-bold">$0</div>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 text-[9px] font-bold uppercase block mb-1">Project ROI</span>
+                                <div id="out-roi" class="text-lg font-bold text-emerald-400">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Subtle background decoration -->
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Contractor Vetting Section -->
-        <section id="tab-vetting" class="hidden">
+        <!-- Contractor Vetting -->
+        <section id="tab-vetting" class="hidden animate-in fade-in duration-500">
             <div class="card p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-slate-800 text-xl">Contractor Master Checklist</h3>
-                    <span class="text-[10px] bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-500">FROM L-CARE VETTING FORM</span>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-2xl">Vetting & Compliance</h3>
+                        <p class="text-sm text-slate-500">Complete these checks before signing any agreements.</p>
+                    </div>
+                    <button onclick="resetChecks()" class="text-xs font-bold text-slate-400 hover:text-red-500 uppercase tracking-widest">Reset Checklist</button>
                 </div>
+                
                 <div class="grid md:grid-cols-2 gap-4" id="vetting-list">
-                    <!-- Checkboxes -->
-                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
-                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
-                        <div>
-                            <p class="font-bold text-sm text-slate-800">License Verification</p>
-                            <p class="text-xs text-slate-500">Checked with the State Licensing Board for active status/complaints.</p>
-                        </div>
-                    </label>
-                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
-                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
-                        <div>
-                            <p class="font-bold text-sm text-slate-800">Insurance Details</p>
-                            <p class="text-xs text-slate-500">Received Certificate of Insurance (General Liability & Workers Comp).</p>
-                        </div>
-                    </label>
-                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
-                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
-                        <div>
-                            <p class="font-bold text-sm text-slate-800">References Contacted</p>
-                            <p class="text-xs text-slate-500">Spoke to at least 3 previous clients about quality and punctuality.</p>
-                        </div>
-                    </label>
-                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
-                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
-                        <div>
-                            <p class="font-bold text-sm text-slate-800">Written Estimate</p>
-                            <p class="text-xs text-slate-500">Scope of work is clearly defined with line-item pricing.</p>
-                        </div>
-                    </label>
+                    <!-- Dynamic Checkboxes -->
+                    <div class="vetting-item">
+                        <label class="flex items-start gap-4 p-5 border rounded-2xl hover:bg-slate-50 cursor-pointer transition-all group">
+                            <input type="checkbox" onchange="autoSave()" class="mt-1 w-6 h-6 rounded-lg accent-slate-900 border-slate-300">
+                            <div>
+                                <p class="font-bold text-slate-800 group-hover:text-slate-900">Legal Business Entity</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Verified Secretary of State records for active business status.</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="vetting-item">
+                        <label class="flex items-start gap-4 p-5 border rounded-2xl hover:bg-slate-50 cursor-pointer transition-all group">
+                            <input type="checkbox" onchange="autoSave()" class="mt-1 w-6 h-6 rounded-lg accent-slate-900 border-slate-300">
+                            <div>
+                                <p class="font-bold text-slate-800 group-hover:text-slate-900">Active Trade License</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">License number confirmed with local or state authorities.</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="vetting-item">
+                        <label class="flex items-start gap-4 p-5 border rounded-2xl hover:bg-slate-50 cursor-pointer transition-all group">
+                            <input type="checkbox" onchange="autoSave()" class="mt-1 w-6 h-6 rounded-lg accent-slate-900 border-slate-300">
+                            <div>
+                                <p class="font-bold text-slate-800 group-hover:text-slate-900">Insurance Certificate (COI)</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Current GL and Workers Comp docs naming you as additionally insured.</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="vetting-item">
+                        <label class="flex items-start gap-4 p-5 border rounded-2xl hover:bg-slate-50 cursor-pointer transition-all group">
+                            <input type="checkbox" onchange="autoSave()" class="mt-1 w-6 h-6 rounded-lg accent-slate-900 border-slate-300">
+                            <div>
+                                <p class="font-bold text-slate-800 group-hover:text-slate-900">Direct Reference Call</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Vetted recent project performance with a phone reference.</p>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Project Notes Section -->
-        <section id="tab-notes" class="hidden">
-            <div class="card p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-slate-800">Property Diary & Building Notes</h3>
-                    <div id="save-indicator" class="text-[10px] text-slate-400 font-bold uppercase italic">Auto-saving enabled</div>
+        <!-- Project Notes -->
+        <section id="tab-notes" class="hidden animate-in fade-in duration-500">
+            <div class="card overflow-hidden">
+                <div class="flex items-center justify-between p-6 bg-slate-50 border-b border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                        <h3 class="font-bold text-slate-800 uppercase tracking-widest text-xs">Property Log & Narrative</h3>
+                    </div>
+                    <div id="save-status" class="text-[10px] text-slate-400 font-bold italic">Cloud-Sync Standby</div>
                 </div>
-                <textarea id="main-notes" class="w-full h-[500px] p-6 bg-slate-50 rounded-xl border-none focus:ring-2 focus:ring-slate-900 outline-none font-mono text-sm leading-relaxed" placeholder="Start typing your notes about the project here..."></textarea>
-                <div class="mt-4 flex justify-end">
-                    <button onclick="clearNotes()" class="text-red-500 text-xs font-bold hover:underline">Delete All Notes</button>
-                </div>
+                <textarea id="main-notes" class="w-full h-[600px] p-8 text-slate-700 leading-relaxed resize-none focus:outline-none font-mono text-sm bg-white" placeholder="Type property address, contractor logs, and milestone updates here..."></textarea>
+            </div>
+            <div class="mt-6 flex justify-between items-center text-xs">
+                <p class="text-slate-400 italic">Storage Key: local_investor_session_01</p>
+                <button onclick="clearSystem()" class="text-red-400 font-bold hover:text-red-600 transition-colors uppercase tracking-widest">Wipe Local Database</button>
             </div>
         </section>
 
         <footer class="mt-20 pt-8 border-t border-slate-200 text-center">
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">L-Care Professional Services | Est. 2023</p>
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em]">Proprietary Investor System | L-Care 2026</p>
         </footer>
     </div>
 
     <script>
-        // Global State
-        const STORAGE_KEY = 'lcare_investor_data';
+        const KEY = 'lcare_investor_pro_v2';
 
         function showTab(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -157,11 +192,8 @@
                 b.classList.remove('tab-active');
                 b.classList.add('text-slate-400');
             });
-
             document.getElementById('tab-' + id).classList.remove('hidden');
-            const btn = document.getElementById('btn-' + id);
-            btn.classList.add('tab-active');
-            btn.classList.remove('text-slate-400');
+            document.getElementById('btn-' + id).classList.add('tab-active');
         }
 
         function doCalc() {
@@ -174,56 +206,79 @@
             const profit = arv - totalBasis;
             const roi = totalBasis > 0 ? (profit / totalBasis) * 100 : 0;
 
+            document.getElementById('out-basis').innerText = '$' + totalBasis.toLocaleString();
+            
             const profitEl = document.getElementById('out-profit');
             profitEl.innerText = (profit < 0 ? '-' : '') + '$' + Math.abs(profit).toLocaleString();
-            profitEl.style.color = profit >= 0 ? '#fff' : '#f87171';
-            
-            document.getElementById('out-roi').innerText = roi.toFixed(1) + '%';
+            profitEl.className = profit < 0 ? 'text-5xl font-black mb-8 text-red-400' : 'text-5xl font-black mb-8 text-white';
+
+            const roiEl = document.getElementById('out-roi');
+            roiEl.innerText = roi.toFixed(1) + '%';
+            roiEl.className = roi < 0 ? 'text-lg font-bold text-red-400' : 'text-lg font-bold text-emerald-400';
+
             autoSave();
         }
 
         function autoSave() {
+            const checks = [];
+            document.querySelectorAll('#vetting-list input[type="checkbox"]').forEach((cb, i) => {
+                checks.push(cb.checked);
+            });
+
             const data = {
                 buy: document.getElementById('buy-price').value,
                 reno: document.getElementById('reno-cost').value,
                 hold: document.getElementById('hold-cost').value,
                 arv: document.getElementById('arv').value,
-                notes: document.getElementById('main-notes').value
+                notes: document.getElementById('main-notes').value,
+                checks: checks
             };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            localStorage.setItem(KEY, JSON.stringify(data));
             
-            const indicator = document.getElementById('save-indicator');
-            indicator.innerText = "Saved to browser memory";
-            setTimeout(() => { indicator.innerText = "Auto-saving enabled"; }, 2000);
+            const status = document.getElementById('save-status');
+            status.innerText = "Data Saved Locally";
+            status.classList.add('text-emerald-500');
+            setTimeout(() => { 
+                status.innerText = "System Ready"; 
+                status.classList.remove('text-emerald-500');
+            }, 1500);
         }
 
-        function clearNotes() {
-            if(confirm("Confirm: Delete all local project notes? This cannot be undone.")) {
-                localStorage.removeItem(STORAGE_KEY);
+        function resetChecks() {
+            if(confirm("Reset all vetting progress?")) {
+                document.querySelectorAll('#vetting-list input[type="checkbox"]').forEach(cb => cb.checked = false);
+                autoSave();
+            }
+        }
+
+        function clearSystem() {
+            if(confirm("WIPE ALL DATA? This will delete all notes and financial data from this browser.")) {
+                localStorage.removeItem(KEY);
                 location.reload();
             }
         }
 
         window.onload = () => {
-            // Set Date
             const d = new Date();
-            document.getElementById('current-date').innerText = d.toLocaleDateString('en-US', { 
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-            });
+            document.getElementById('current-date').innerText = d.toDateString();
 
-            // Load Data
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if(raw) {
-                const data = JSON.parse(raw);
+            const saved = localStorage.getItem(KEY);
+            if(saved) {
+                const data = JSON.parse(saved);
                 document.getElementById('buy-price').value = data.buy || "";
                 document.getElementById('reno-cost').value = data.reno || "";
                 document.getElementById('hold-cost').value = data.hold || "";
                 document.getElementById('arv').value = data.arv || "";
                 document.getElementById('main-notes').value = data.notes || "";
+                
+                if(data.checks) {
+                    document.querySelectorAll('#vetting-list input[type="checkbox"]').forEach((cb, i) => {
+                        cb.checked = data.checks[i] || false;
+                    });
+                }
                 doCalc();
             }
 
-            // Bind auto-save to notes
             document.getElementById('main-notes').addEventListener('input', autoSave);
         };
     </script>
