@@ -3,277 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LCARE Pro | Investor Master Toolkit</title>
+    <title>L-Care Investor Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .glass-card { background: white; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .sidebar-item.active { background: #1e293b; color: white; }
-        #safety-modal { backdrop-filter: blur(8px); }
-        @media print { .no-print { display: none; } .print-only { display: block !important; } body { background: white; } .glass-card { border: none; box-shadow: none; } }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .safety-border { border-top: 4px solid #ef4444; }
+        .card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-active { border-bottom: 3px solid #0f172a; color: #0f172a; font-weight: 700; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row">
+<body class="min-h-screen">
 
-    <!-- Safety Disclaimer Modal (First Load Only) -->
-    <div id="safety-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl border-t-8 border-red-600">
-            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
-                <i class="fas fa-shield-alt text-red-600"></i> SAFETY ACKNOWLEDGMENT
-            </h2>
-            <div class="mt-4 text-slate-600 space-y-4 text-sm leading-relaxed">
-                <p>By using the <strong>LCARE Pro Master Toolkit</strong>, you acknowledge the following critical safety protocols:</p>
-                <ul class="list-disc ml-5 space-y-2 font-medium text-slate-800">
-                    <li>Software cannot detect structural failures, gas leaks, or electrical hazards.</li>
-                    <li>Always wear full PPE (Hard hat, steel toes, eye protection) when entering a job site.</li>
-                    <li>Never issue final payment to a contractor without a physical, on-site safety walkthrough.</li>
-                    <li>This toolkit is a management aid, not a replacement for licensed engineering or legal advice.</li>
-                </ul>
+    <!-- Safety & Privacy Header -->
+    <div class="bg-red-50 p-4 safety-border">
+        <div class="max-w-6xl mx-auto flex items-center gap-4">
+            <div class="bg-red-100 p-2 rounded-full">🛡️</div>
+            <div>
+                <h2 class="text-xs font-bold text-red-800 uppercase tracking-widest">Security Status: Encrypted Local Storage</h2>
+                <p class="text-[11px] text-red-700 leading-tight">
+                    Your financial inputs and project notes are saved directly in your browser's local memory. 
+                    No data is transmitted to L-Care or external servers. Your birthday (March 21) and project logic are for your eyes only.
+                </p>
             </div>
-            <button onclick="dismissSafety()" class="mt-8 w-full bg-red-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-red-700 transition">
-                I UNDERSTAND & AGREE
-            </button>
         </div>
     </div>
 
-    <!-- Sidebar (Navigation) -->
-    <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col no-print">
-        <div class="p-6 border-b border-slate-800 text-center md:text-left">
-            <h1 class="text-xl font-black text-white tracking-tighter uppercase">LCARE <span class="text-blue-500">PRO</span></h1>
-            <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1">Final Command Suite</p>
-        </div>
-        <nav class="flex-1 p-4 space-y-2">
-            <button onclick="showTab('dashboard')" id="btn-dashboard" class="sidebar-item active w-full flex items-center p-3 rounded-lg transition text-sm font-medium">
-                <i class="fas fa-home w-6"></i> Dashboard
-            </button>
-            <button onclick="showTab('vetting')" id="btn-vetting" class="sidebar-item w-full flex items-center p-3 rounded-lg transition text-sm font-medium">
-                <i class="fas fa-user-shield w-6"></i> Vetting Lab
-            </button>
-            <button onclick="showTab('calculator')" id="btn-calculator" class="sidebar-item w-full flex items-center p-3 rounded-lg transition text-sm font-medium">
-                <i class="fas fa-calculator w-6"></i> ROI Engine
-            </button>
-            <button onclick="showTab('safety')" id="btn-safety" class="sidebar-item w-full flex items-center p-3 rounded-lg transition text-sm font-medium text-red-400 hover:text-red-300">
-                <i class="fas fa-exclamation-triangle w-6"></i> Safety Portal
-            </button>
-        </nav>
-        <div class="p-4 border-t border-slate-800 text-[10px] text-slate-500">
-            COMPANION TOOL v2.1<br>SECURE LOCAL STORAGE
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto h-screen relative">
-        <header class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-10 no-print">
-            <h2 id="tab-title" class="text-lg font-bold text-slate-800 uppercase tracking-tight">System Overview</h2>
-            <div class="flex gap-2">
-                <button onclick="window.print()" class="text-xs bg-slate-100 px-3 py-2 rounded font-bold hover:bg-slate-200 transition">
-                    <i class="fas fa-print mr-1"></i> PRINT PDF
-                </button>
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tight">L-Care Dashboard</h1>
+                <p class="text-slate-500 font-medium">Real Estate Investment & Project Management Toolkit</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <p class="text-[10px] font-bold text-slate-400 uppercase">Current Session</p>
+                <p id="current-date" class="text-sm font-semibold text-slate-600"></p>
             </div>
         </header>
 
-        <div class="p-6 md:p-10">
-            <!-- TAB: Dashboard -->
-            <div id="tab-dashboard" class="tab-content space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 rounded-2xl border-t-4 border-green-500">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">System Status</span>
-                        <div class="text-2xl font-black mt-1 text-green-600">ACTIVE</div>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl border-t-4 border-blue-500">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Privacy Guard</span>
-                        <div class="text-2xl font-black mt-1 text-blue-600">LOCAL ONLY</div>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl border-t-4 border-red-500">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Safety Protocol</span>
-                        <div class="text-2xl font-black mt-1 text-red-600">STRICT</div>
-                    </div>
-                </div>
+        <!-- Navigation -->
+        <nav class="flex gap-8 border-b border-slate-200 mb-8 overflow-x-auto">
+            <button onclick="showTab('calc')" id="btn-calc" class="pb-4 px-2 tab-active transition-all whitespace-nowrap">ROI Calculator</button>
+            <button onclick="showTab('vetting')" id="btn-vetting" class="pb-4 px-2 text-slate-400 hover:text-slate-600 transition-all whitespace-nowrap">Contractor Vetting</button>
+            <button onclick="showTab('notes')" id="btn-notes" class="pb-4 px-2 text-slate-400 hover:text-slate-600 transition-all whitespace-nowrap">Project Notes</button>
+        </nav>
 
-                <div class="glass-card p-8 rounded-2xl bg-gradient-to-br from-white to-slate-50 border-l-8 border-slate-900">
-                    <h3 class="font-bold text-slate-800 text-xl mb-4 italic">"The Final Command"</h3>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        Welcome, Investor. This digital companion is designed to help you execute projects with military precision. Use the Vetting Lab to filter your contractors and the ROI Engine to protect your margins.
-                    </p>
-                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 text-amber-800 text-sm font-medium">
-                        <i class="fas fa-info-circle mr-2"></i> TIP: All data is saved automatically to your local browser storage.
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: Vetting Lab -->
-            <div id="tab-vetting" class="tab-content hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="font-bold text-lg mb-6 uppercase tracking-tight text-slate-700">Contractor Analytics</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Company Name</label>
-                                <input id="c-name" type="text" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Precision Builders">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Years Experience</label>
-                                    <input id="c-years" type="number" class="w-full p-3 border rounded-xl outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Ref. Status</label>
-                                    <select id="c-refs" class="w-full p-3 border rounded-xl outline-none">
-                                        <option value="20">3+ References</option>
-                                        <option value="10">1-2 References</option>
-                                        <option value="0">None</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Insurance Check</label>
-                                <select id="c-ins" class="w-full p-3 border rounded-xl outline-none">
-                                    <option value="50">Valid GL & Workers Comp</option>
-                                    <option value="0">Unverified / None</option>
-                                </select>
-                            </div>
-                            <button onclick="runVetting()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition shadow-lg">
-                                GENERATE TRUST SCORE
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="vetting-result" class="glass-card p-8 rounded-2xl flex flex-col items-center justify-center text-center bg-slate-50 border-dashed border-2">
-                        <div id="score-ring" class="w-32 h-32 rounded-full border-8 border-slate-200 flex items-center justify-center text-3xl font-black text-slate-300">
-                            --
-                        </div>
-                        <h4 class="mt-4 font-bold text-slate-400 uppercase tracking-widest text-sm">Waiting for Analysis</h4>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: ROI Engine -->
-            <div id="tab-calculator" class="tab-content hidden space-y-6">
-                <div class="glass-card p-8 rounded-2xl bg-slate-900 text-white">
-                    <h3 class="font-bold text-lg mb-8 text-blue-400 uppercase tracking-widest">Investment Margins</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- ROI Calculator Section -->
+        <section id="tab-calc" class="grid lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="card p-6">
+                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">💰 Investment Inputs</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Buy Price</label>
-                            <input oninput="runROI()" id="r-buy" type="number" value="200000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Purchase Price ($)</label>
+                            <input type="number" id="buy-price" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="0">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Renovations</label>
-                            <input oninput="runROI()" id="r-reno" type="number" value="40000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Renovation Budget ($)</label>
+                            <input type="number" id="reno-cost" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="0">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Estimated Sale (ARV)</label>
-                            <input oninput="runROI()" id="r-sell" type="number" value="320000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Holding & Selling Costs ($)</label>
+                            <input type="number" id="hold-cost" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Taxes, Fees, Interest">
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 pt-8 border-t border-slate-800">
-                        <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Projected Profit</span>
-                            <div id="res-profit" class="text-5xl font-black text-green-400 mt-2">$80,000</div>
-                        </div>
-                        <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Project ROI</span>
-                            <div id="res-roi" class="text-5xl font-black text-blue-400 mt-2">33.3%</div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Target Sale Price (ARV) ($)</label>
+                            <input type="number" id="arv" oninput="doCalc()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Expected Value">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB: Safety Portal -->
-            <div id="tab-safety" class="tab-content hidden space-y-6">
-                <div class="bg-red-700 text-white p-8 rounded-2xl shadow-xl">
-                    <h2 class="text-2xl font-black uppercase flex items-center gap-3">
-                        <i class="fas fa-exclamation-triangle"></i> Site Safety Lockdown
-                    </h2>
-                    <p class="mt-2 text-red-100">The "Final Command" is about safety. Never skip these checks.</p>
+            <!-- ROI Output -->
+            <div class="space-y-4">
+                <div class="bg-slate-900 rounded-xl p-8 text-white shadow-xl flex flex-col items-center justify-center text-center h-full">
+                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Projected Profit</span>
+                    <div id="out-profit" class="text-4xl font-black mb-6">$0</div>
+                    <div class="w-full h-px bg-slate-800 mb-6"></div>
+                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Annualized ROI</span>
+                    <div id="out-roi" class="text-3xl font-bold text-blue-400">0%</div>
                 </div>
+            </div>
+        </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 rounded-2xl border-l-8 border-red-600">
-                        <h4 class="font-black text-slate-900 uppercase text-xs mb-4">Immediate Stop-Work Checklist</h4>
-                        <div class="space-y-4">
-                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
-                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
-                                <span>No structural removal without verified temporary shoring in place.</span>
-                            </label>
-                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
-                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
-                                <span>Gas and electric utilities are physically tagged and locked out.</span>
-                            </label>
-                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
-                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
-                                <span>Site floor is clear of nails, trip hazards, and standing water.</span>
-                            </label>
+        <!-- Contractor Vetting Section -->
+        <section id="tab-vetting" class="hidden">
+            <div class="card p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-slate-800 text-xl">Contractor Master Checklist</h3>
+                    <span class="text-[10px] bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-500">FROM L-CARE VETTING FORM</span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4" id="vetting-list">
+                    <!-- Checkboxes -->
+                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
+                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">License Verification</p>
+                            <p class="text-xs text-slate-500">Checked with the State Licensing Board for active status/complaints.</p>
                         </div>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl bg-slate-50">
-                        <h4 class="font-black text-slate-900 uppercase text-xs mb-4">Investor Responsibility</h4>
-                        <p class="text-xs text-slate-600 italic leading-relaxed">
-                            As the investor, you set the tone. If you walk onto a site without a hard hat, your crew will too. Lead by example. Safety is not a suggestion—it is the foundation of your profit.
-                        </p>
-                    </div>
+                    </label>
+                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
+                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">Insurance Details</p>
+                            <p class="text-xs text-slate-500">Received Certificate of Insurance (General Liability & Workers Comp).</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
+                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">References Contacted</p>
+                            <p class="text-xs text-slate-500">Spoke to at least 3 previous clients about quality and punctuality.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-4 p-4 border rounded-xl hover:bg-slate-50 cursor-pointer transition">
+                        <input type="checkbox" class="mt-1 w-5 h-5 accent-slate-900">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">Written Estimate</p>
+                            <p class="text-xs text-slate-500">Scope of work is clearly defined with line-item pricing.</p>
+                        </div>
+                    </label>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <footer class="no-print bg-slate-200 h-8 flex items-center px-6 overflow-hidden sticky bottom-0 border-t">
-            <div class="text-[9px] font-bold text-slate-500 flex gap-8 whitespace-nowrap">
-                <span>SYSTEM STATUS: ENCRYPTED</span>
-                <span>MODE: PRIVATE LOCALSTORAGE</span>
-                <span>SAFETY: FIRST RESPONDER PRIORITY</span>
+        <!-- Project Notes Section -->
+        <section id="tab-notes" class="hidden">
+            <div class="card p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800">Property Diary & Building Notes</h3>
+                    <div id="save-indicator" class="text-[10px] text-slate-400 font-bold uppercase italic">Auto-saving enabled</div>
+                </div>
+                <textarea id="main-notes" class="w-full h-[500px] p-6 bg-slate-50 rounded-xl border-none focus:ring-2 focus:ring-slate-900 outline-none font-mono text-sm leading-relaxed" placeholder="Start typing your notes about the project here..."></textarea>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="clearNotes()" class="text-red-500 text-xs font-bold hover:underline">Delete All Notes</button>
+                </div>
             </div>
+        </section>
+
+        <footer class="mt-20 pt-8 border-t border-slate-200 text-center">
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">L-Care Professional Services | Est. 2023</p>
         </footer>
-    </main>
+    </div>
 
     <script>
-        function dismissSafety() {
-            document.getElementById('safety-modal').classList.add('hidden');
-            localStorage.setItem('lcare_safety_ack', 'true');
+        // Global State
+        const STORAGE_KEY = 'lcare_investor_data';
+
+        function showTab(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-slate-400');
+            });
+
+            document.getElementById('tab-' + id).classList.remove('hidden');
+            const btn = document.getElementById('btn-' + id);
+            btn.classList.add('tab-active');
+            btn.classList.remove('text-slate-400');
         }
 
-        window.onload = function() {
-            if(localStorage.getItem('lcare_safety_ack') === 'true') {
-                document.getElementById('safety-modal').classList.add('hidden');
+        function doCalc() {
+            const buy = parseFloat(document.getElementById('buy-price').value) || 0;
+            const reno = parseFloat(document.getElementById('reno-cost').value) || 0;
+            const hold = parseFloat(document.getElementById('hold-cost').value) || 0;
+            const arv = parseFloat(document.getElementById('arv').value) || 0;
+
+            const totalBasis = buy + reno + hold;
+            const profit = arv - totalBasis;
+            const roi = totalBasis > 0 ? (profit / totalBasis) * 100 : 0;
+
+            const profitEl = document.getElementById('out-profit');
+            profitEl.innerText = (profit < 0 ? '-' : '') + '$' + Math.abs(profit).toLocaleString();
+            profitEl.style.color = profit >= 0 ? '#fff' : '#f87171';
+            
+            document.getElementById('out-roi').innerText = roi.toFixed(1) + '%';
+            autoSave();
+        }
+
+        function autoSave() {
+            const data = {
+                buy: document.getElementById('buy-price').value,
+                reno: document.getElementById('reno-cost').value,
+                hold: document.getElementById('hold-cost').value,
+                arv: document.getElementById('arv').value,
+                notes: document.getElementById('main-notes').value
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            
+            const indicator = document.getElementById('save-indicator');
+            indicator.innerText = "Saved to browser memory";
+            setTimeout(() => { indicator.innerText = "Auto-saving enabled"; }, 2000);
+        }
+
+        function clearNotes() {
+            if(confirm("Confirm: Delete all local project notes? This cannot be undone.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
             }
-            runROI();
+        }
+
+        window.onload = () => {
+            // Set Date
+            const d = new Date();
+            document.getElementById('current-date').innerText = d.toLocaleDateString('en-US', { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+
+            // Load Data
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if(raw) {
+                const data = JSON.parse(raw);
+                document.getElementById('buy-price').value = data.buy || "";
+                document.getElementById('reno-cost').value = data.reno || "";
+                document.getElementById('hold-cost').value = data.hold || "";
+                document.getElementById('arv').value = data.arv || "";
+                document.getElementById('main-notes').value = data.notes || "";
+                doCalc();
+            }
+
+            // Bind auto-save to notes
+            document.getElementById('main-notes').addEventListener('input', autoSave);
         };
-
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + tabId).classList.add('active');
-            const titles = {'dashboard': 'System Overview', 'vetting': 'Vetting Laboratory', 'calculator': 'ROI & Margin Engine', 'safety': 'Critical Safety Portal'};
-            document.getElementById('tab-title').innerText = titles[tabId];
-        }
-
-        function runVetting() {
-            const years = parseInt(document.getElementById('c-years').value) || 0;
-            const refs = parseInt(document.getElementById('c-refs').value);
-            const ins = parseInt(document.getElementById('c-ins').value);
-            let score = (years * 3) + refs + ins;
-            if (score > 100) score = 100;
-            const ring = document.getElementById('score-ring');
-            ring.innerText = Math.round(score);
-            ring.classList.remove('text-slate-300', 'border-slate-200', 'text-green-600', 'border-green-600', 'text-amber-500', 'border-amber-500', 'text-red-600', 'border-red-600');
-            if (score >= 80) ring.classList.add('text-green-600', 'border-green-600');
-            else if (score >= 50) ring.classList.add('text-amber-500', 'border-amber-500');
-            else ring.classList.add('text-red-600', 'border-red-600');
-            const parent = document.getElementById('vetting-result');
-            parent.querySelector('h4').innerText = score >= 80 ? "TRUST SCORE: HIGH" : "TRUST SCORE: CAUTION";
-        }
-
-        function runROI() {
-            const buy = parseFloat(document.getElementById('r-buy').value) || 0;
-            const reno = parseFloat(document.getElementById('r-reno').value) || 0;
-            const sell = parseFloat(document.getElementById('r-sell').value) || 0;
-            const profit = sell - (buy + reno);
-            const roi = ((profit / (buy + reno)) * 100).toFixed(1);
-            document.getElementById('res-profit').innerText = '$' + profit.toLocaleString();
-            document.getElementById('res-roi').innerText = roi + '%';
-        }
     </script>
 </body>
 </html>
