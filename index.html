@@ -11,10 +11,32 @@
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .glass-card { background: white; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
         .sidebar-item.active { background: #1e293b; color: white; }
+        #safety-modal { backdrop-filter: blur(8px); }
         @media print { .no-print { display: none; } .print-only { display: block !important; } body { background: white; } .glass-card { border: none; box-shadow: none; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- Safety Disclaimer Modal (First Load Only) -->
+    <div id="safety-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl border-t-8 border-red-600">
+            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                <i class="fas fa-shield-alt text-red-600"></i> SAFETY ACKNOWLEDGMENT
+            </h2>
+            <div class="mt-4 text-slate-600 space-y-4 text-sm leading-relaxed">
+                <p>By using the <strong>LCARE Pro Master Toolkit</strong>, you acknowledge the following critical safety protocols:</p>
+                <ul class="list-disc ml-5 space-y-2 font-medium text-slate-800">
+                    <li>Software cannot detect structural failures, gas leaks, or electrical hazards.</li>
+                    <li>Always wear full PPE (Hard hat, steel toes, eye protection) when entering a job site.</li>
+                    <li>Never issue final payment to a contractor without a physical, on-site safety walkthrough.</li>
+                    <li>This toolkit is a management aid, not a replacement for licensed engineering or legal advice.</li>
+                </ul>
+            </div>
+            <button onclick="dismissSafety()" class="mt-8 w-full bg-red-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-red-700 transition">
+                I UNDERSTAND & AGREE
+            </button>
+        </div>
+    </div>
 
     <!-- Sidebar (Navigation) -->
     <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col no-print">
@@ -37,14 +59,12 @@
             </button>
         </nav>
         <div class="p-4 border-t border-slate-800 text-[10px] text-slate-500">
-            COMPANION TOOL v2.1<br>LOCAL STORAGE SECURED
+            COMPANION TOOL v2.1<br>SECURE LOCAL STORAGE
         </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto h-screen relative">
-        
-        <!-- Header -->
         <header class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-10 no-print">
             <h2 id="tab-title" class="text-lg font-bold text-slate-800 uppercase tracking-tight">System Overview</h2>
             <div class="flex gap-2">
@@ -55,42 +75,30 @@
         </header>
 
         <div class="p-6 md:p-10">
-
             <!-- TAB: Dashboard -->
             <div id="tab-dashboard" class="tab-content space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 rounded-2xl">
+                    <div class="glass-card p-6 rounded-2xl border-t-4 border-green-500">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">System Status</span>
-                        <div class="text-2xl font-black mt-1 text-green-600">OPERATIONAL</div>
-                        <p class="text-xs text-slate-500 mt-2">All local modules loaded.</p>
+                        <div class="text-2xl font-black mt-1 text-green-600">ACTIVE</div>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl">
+                    <div class="glass-card p-6 rounded-2xl border-t-4 border-blue-500">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">Privacy Guard</span>
-                        <div class="text-2xl font-black mt-1 text-blue-600">SECURED</div>
-                        <p class="text-xs text-slate-500 mt-2">Zero data leaves this browser.</p>
+                        <div class="text-2xl font-black mt-1 text-blue-600">LOCAL ONLY</div>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl border-l-4 border-amber-500">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Safety Mode</span>
-                        <div class="text-2xl font-black mt-1 text-amber-600">STRICT</div>
-                        <p class="text-xs text-slate-500 mt-2">Manual verification required.</p>
+                    <div class="glass-card p-6 rounded-2xl border-t-4 border-red-500">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Safety Protocol</span>
+                        <div class="text-2xl font-black mt-1 text-red-600">STRICT</div>
                     </div>
                 </div>
 
-                <div class="glass-card p-8 rounded-2xl bg-gradient-to-br from-white to-slate-50">
-                    <h3 class="font-bold text-slate-800 text-xl mb-4">The Final Command Framework</h3>
+                <div class="glass-card p-8 rounded-2xl bg-gradient-to-br from-white to-slate-50 border-l-8 border-slate-900">
+                    <h3 class="font-bold text-slate-800 text-xl mb-4 italic">"The Final Command"</h3>
                     <p class="text-slate-600 leading-relaxed mb-6">
-                        This digital suite is your central command for real estate operations. Manage your contractors, calculate your deal margins, and never step onto a job site without your Safety Checklist.
+                        Welcome, Investor. This digital companion is designed to help you execute projects with military precision. Use the Vetting Lab to filter your contractors and the ROI Engine to protect your margins.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="flex items-center text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-full border shadow-sm">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i> Vet Pros
-                        </div>
-                        <div class="flex items-center text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-full border shadow-sm">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i> Lock Margins
-                        </div>
-                        <div class="flex items-center text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-full border shadow-sm">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i> Stay Safe
-                        </div>
+                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 text-amber-800 text-sm font-medium">
+                        <i class="fas fa-info-circle mr-2"></i> TIP: All data is saved automatically to your local browser storage.
                     </div>
                 </div>
             </div>
@@ -99,35 +107,35 @@
             <div id="tab-vetting" class="tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="font-bold text-lg mb-6 uppercase tracking-tight">Contractor Intake</h3>
+                        <h3 class="font-bold text-lg mb-6 uppercase tracking-tight text-slate-700">Contractor Analytics</h3>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Company Name</label>
-                                <input id="c-name" type="text" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="e.g. Precision Framing">
+                                <input id="c-name" type="text" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Precision Builders">
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Years Business</label>
+                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Years Experience</label>
                                     <input id="c-years" type="number" class="w-full p-3 border rounded-xl outline-none">
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">References</label>
+                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Ref. Status</label>
                                     <select id="c-refs" class="w-full p-3 border rounded-xl outline-none">
-                                        <option value="3">3+ Verified</option>
-                                        <option value="1">1-2 Provided</option>
+                                        <option value="20">3+ References</option>
+                                        <option value="10">1-2 References</option>
                                         <option value="0">None</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Insurance Verification</label>
+                                <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Insurance Check</label>
                                 <select id="c-ins" class="w-full p-3 border rounded-xl outline-none">
-                                    <option value="100">Valid COI Provided</option>
-                                    <option value="0">Unverified / Expired</option>
+                                    <option value="50">Valid GL & Workers Comp</option>
+                                    <option value="0">Unverified / None</option>
                                 </select>
                             </div>
                             <button onclick="runVetting()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition shadow-lg">
-                                ANALYZE CONTRACTOR
+                                GENERATE TRUST SCORE
                             </button>
                         </div>
                     </div>
@@ -136,8 +144,7 @@
                         <div id="score-ring" class="w-32 h-32 rounded-full border-8 border-slate-200 flex items-center justify-center text-3xl font-black text-slate-300">
                             --
                         </div>
-                        <h4 class="mt-4 font-bold text-slate-400 uppercase tracking-widest text-sm">Waiting for Data</h4>
-                        <p class="text-xs text-slate-500 mt-2 px-6">Input contractor details to generate a Final Command Trust Score.</p>
+                        <h4 class="mt-4 font-bold text-slate-400 uppercase tracking-widest text-sm">Waiting for Analysis</h4>
                     </div>
                 </div>
             </div>
@@ -145,30 +152,30 @@
             <!-- TAB: ROI Engine -->
             <div id="tab-calculator" class="tab-content hidden space-y-6">
                 <div class="glass-card p-8 rounded-2xl bg-slate-900 text-white">
-                    <h3 class="font-bold text-lg mb-8 text-blue-400 uppercase tracking-widest">Margin Analysis</h3>
+                    <h3 class="font-bold text-lg mb-8 text-blue-400 uppercase tracking-widest">Investment Margins</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Purchase Price</label>
-                            <input oninput="runROI()" id="r-buy" type="number" value="250000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Buy Price</label>
+                            <input oninput="runROI()" id="r-buy" type="number" value="200000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Reno Budget</label>
-                            <input oninput="runROI()" id="r-reno" type="number" value="50000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Renovations</label>
+                            <input oninput="runROI()" id="r-reno" type="number" value="40000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Target Sale (ARV)</label>
-                            <input oninput="runROI()" id="r-sell" type="number" value="385000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
+                            <label class="block text-[10px] font-black uppercase text-slate-500 mb-2">Estimated Sale (ARV)</label>
+                            <input oninput="runROI()" id="r-sell" type="number" value="320000" class="w-full bg-transparent border-b-2 border-slate-700 text-2xl font-bold p-2 focus:border-blue-500 outline-none">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 pt-8 border-t border-slate-800">
                         <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Net Profit Est.</span>
-                            <div id="res-profit" class="text-5xl font-black text-green-400 mt-2">$85,000</div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Projected Profit</span>
+                            <div id="res-profit" class="text-5xl font-black text-green-400 mt-2">$80,000</div>
                         </div>
                         <div class="text-center">
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Project ROI</span>
-                            <div id="res-roi" class="text-5xl font-black text-blue-400 mt-2">28.3%</div>
+                            <div id="res-roi" class="text-5xl font-black text-blue-400 mt-2">33.3%</div>
                         </div>
                     </div>
                 </div>
@@ -176,67 +183,69 @@
 
             <!-- TAB: Safety Portal -->
             <div id="tab-safety" class="tab-content hidden space-y-6">
-                <div class="bg-red-600 text-white p-8 rounded-2xl shadow-xl">
-                    <h2 class="text-2xl font-black flex items-center gap-3">
-                        <i class="fas fa-biohazard"></i> CRITICAL SAFETY LOCK
+                <div class="bg-red-700 text-white p-8 rounded-2xl shadow-xl">
+                    <h2 class="text-2xl font-black uppercase flex items-center gap-3">
+                        <i class="fas fa-exclamation-triangle"></i> Site Safety Lockdown
                     </h2>
-                    <p class="mt-2 text-red-100 font-medium">Never issue payment or start work without verifying these physical markers.</p>
+                    <p class="mt-2 text-red-100">The "Final Command" is about safety. Never skip these checks.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="glass-card p-6 rounded-2xl border-l-8 border-red-600">
-                        <h4 class="font-black text-slate-900 uppercase text-xs tracking-tighter mb-4">Site Stop Checklist</h4>
-                        <div class="space-y-3">
-                            <label class="flex items-center gap-3 text-sm text-slate-700 p-2 hover:bg-slate-50 rounded cursor-pointer">
-                                <input type="checkbox" class="w-5 h-5 rounded"> Utilities (Gas/Water) physically locked out?
+                        <h4 class="font-black text-slate-900 uppercase text-xs mb-4">Immediate Stop-Work Checklist</h4>
+                        <div class="space-y-4">
+                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
+                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
+                                <span>No structural removal without verified temporary shoring in place.</span>
                             </label>
-                            <label class="flex items-center gap-3 text-sm text-slate-700 p-2 hover:bg-slate-50 rounded cursor-pointer">
-                                <input type="checkbox" class="w-5 h-5 rounded"> PPE (Hardhats/Steel Toe) on all staff?
+                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
+                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
+                                <span>Gas and electric utilities are physically tagged and locked out.</span>
                             </label>
-                            <label class="flex items-center gap-3 text-sm text-slate-700 p-2 hover:bg-slate-50 rounded cursor-pointer">
-                                <input type="checkbox" class="w-5 h-5 rounded"> Load-bearing supports verified?
+                            <label class="flex items-start gap-3 text-sm text-slate-700 font-medium">
+                                <input type="checkbox" class="w-5 h-5 mt-0.5 rounded border-slate-300"> 
+                                <span>Site floor is clear of nails, trip hazards, and standing water.</span>
                             </label>
                         </div>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl border-l-8 border-slate-900">
-                        <h4 class="font-black text-slate-900 uppercase text-xs tracking-tighter mb-4">Digital Disclaimers</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed italic">
-                            This software is a management interface. It cannot detect gas leaks, structural failure, or human negligence. Physical inspection by a licensed professional is the only way to clear a safety gate.
+                    <div class="glass-card p-6 rounded-2xl bg-slate-50">
+                        <h4 class="font-black text-slate-900 uppercase text-xs mb-4">Investor Responsibility</h4>
+                        <p class="text-xs text-slate-600 italic leading-relaxed">
+                            As the investor, you set the tone. If you walk onto a site without a hard hat, your crew will too. Lead by example. Safety is not a suggestion—it is the foundation of your profit.
                         </p>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Footer / Safety Ticker -->
         <footer class="no-print bg-slate-200 h-8 flex items-center px-6 overflow-hidden sticky bottom-0 border-t">
-            <div class="text-[9px] font-bold text-slate-500 flex gap-8 whitespace-nowrap animate-pulse">
-                <span>SYSTEM STATUS: SECURE</span>
-                <span>DATA: LOCAL ONLY</span>
-                <span>VERSION: 2.1.0-STABLE</span>
-                <span>REMINDER: TRUST BUT VERIFY</span>
+            <div class="text-[9px] font-bold text-slate-500 flex gap-8 whitespace-nowrap">
+                <span>SYSTEM STATUS: ENCRYPTED</span>
+                <span>MODE: PRIVATE LOCALSTORAGE</span>
+                <span>SAFETY: FIRST RESPONDER PRIORITY</span>
             </div>
         </footer>
     </main>
 
     <script>
+        function dismissSafety() {
+            document.getElementById('safety-modal').classList.add('hidden');
+            localStorage.setItem('lcare_safety_ack', 'true');
+        }
+
+        window.onload = function() {
+            if(localStorage.getItem('lcare_safety_ack') === 'true') {
+                document.getElementById('safety-modal').classList.add('hidden');
+            }
+            runROI();
+        };
+
         function showTab(tabId) {
-            // Content
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
-            
-            // Buttons
             document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + tabId).classList.add('active');
-
-            // Header Title
-            const titles = {
-                'dashboard': 'System Overview',
-                'vetting': 'Vetting Laboratory',
-                'calculator': 'ROI & Margin Engine',
-                'safety': 'Critical Safety Portal'
-            };
+            const titles = {'dashboard': 'System Overview', 'vetting': 'Vetting Laboratory', 'calculator': 'ROI & Margin Engine', 'safety': 'Critical Safety Portal'};
             document.getElementById('tab-title').innerText = titles[tabId];
         }
 
@@ -244,38 +253,27 @@
             const years = parseInt(document.getElementById('c-years').value) || 0;
             const refs = parseInt(document.getElementById('c-refs').value);
             const ins = parseInt(document.getElementById('c-ins').value);
-            
-            let score = (years * 5) + (refs * 15) + (ins * 0.5);
+            let score = (years * 3) + refs + ins;
             if (score > 100) score = 100;
-
             const ring = document.getElementById('score-ring');
             ring.innerText = Math.round(score);
-            ring.classList.remove('text-slate-300', 'border-slate-200');
-            
+            ring.classList.remove('text-slate-300', 'border-slate-200', 'text-green-600', 'border-green-600', 'text-amber-500', 'border-amber-500', 'text-red-600', 'border-red-600');
             if (score >= 80) ring.classList.add('text-green-600', 'border-green-600');
             else if (score >= 50) ring.classList.add('text-amber-500', 'border-amber-500');
             else ring.classList.add('text-red-600', 'border-red-600');
-
             const parent = document.getElementById('vetting-result');
-            parent.querySelector('h4').innerText = score >= 80 ? "PROCEED - HIGH TRUST" : "CAUTION - REVIEW COI";
-            parent.querySelector('h4').classList.remove('text-slate-400');
-            parent.querySelector('h4').classList.add(score >= 80 ? 'text-green-600' : 'text-amber-600');
+            parent.querySelector('h4').innerText = score >= 80 ? "TRUST SCORE: HIGH" : "TRUST SCORE: CAUTION";
         }
 
         function runROI() {
             const buy = parseFloat(document.getElementById('r-buy').value) || 0;
             const reno = parseFloat(document.getElementById('r-reno').value) || 0;
             const sell = parseFloat(document.getElementById('r-sell').value) || 0;
-
             const profit = sell - (buy + reno);
             const roi = ((profit / (buy + reno)) * 100).toFixed(1);
-
             document.getElementById('res-profit').innerText = '$' + profit.toLocaleString();
             document.getElementById('res-roi').innerText = roi + '%';
         }
-
-        // Initialize
-        window.onload = runROI;
     </script>
 </body>
 </html>
